@@ -1,0 +1,27 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; margin: 0; overflow: hidden; background: #090d12; }
+body { font-family: 'Inter Variable', Inter, system-ui, -apple-system, sans-serif; user-select: none; -webkit-font-smoothing: antialiased; }
+input, textarea { user-select: text; }
+
+input[type='range'] { -webkit-appearance: none; appearance: none; background: #1f2937; height: 6px; border-radius: 9999px; outline: none; }
+input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #f59e0b; cursor: pointer; border: 2px solid #0f151d; box-shadow: 0 0 8px rgba(245, 158, 11, 0.5); }
+input[type='range']:focus-visible { outline: 2px solid #f59e0b; outline-offset: 3px; }
+input[type='range']:disabled { opacity: 0.4; }
+input[type='number']::-webkit-inner-spin-button { opacity: 1; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #090d12; }
+::-webkit-scrollbar-thumb { background: #232f40; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #37465b; }
+
+button:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid #f59e0b; outline-offset: 2px; }
+button:disabled { cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

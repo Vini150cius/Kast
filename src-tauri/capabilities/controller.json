@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "controller",
+  "description": "Somente o controlador pode abrir o seletor de arquivos",
+  "windows": ["main"],
+  "permissions": ["dialog:allow-open"]
+}
