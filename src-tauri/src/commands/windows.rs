@@ -24,10 +24,11 @@ pub fn app_ready(app: AppHandle) -> AppResult<()> {
     Ok(())
 }
 
-/// Abre uma janela sem bordas cobrindo cada monitor NÃO primário.
+/// Abre uma janela sem bordas cobrindo cada monitor que NÃO é o do Controlador.
+/// `async` de propósito: criar janelas dentro de um command síncrono pode travar (deadlock) no Windows.
 /// Sem monitor secundário, abre uma janela de pré-visualização (útil para testes).
 #[tauri::command]
-pub fn open_display_windows(
+pub async fn open_display_windows(
     app: AppHandle,
     state: tauri::State<'_, AppState>,
 ) -> AppResult<Vec<String>> {
@@ -63,6 +64,14 @@ pub fn open_display_windows(
             .set_size(PhysicalSize::new(m.width, m.height))
             .map_err(win_err)?;
         window.show().map_err(win_err)?;
+        // Com DPIs diferentes entre monitores, o SO pode redimensionar ao mover a janela:
+        // reaplica a geometria depois de mostrar.
+        window
+            .set_position(PhysicalPosition::new(m.x, m.y))
+            .map_err(win_err)?;
+        window
+            .set_size(PhysicalSize::new(m.width, m.height))
+            .map_err(win_err)?;
 
         state
             .displays

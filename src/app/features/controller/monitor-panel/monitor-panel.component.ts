@@ -36,6 +36,9 @@ import { MonitorService } from '../../../core/services/monitor.service';
             </div>
           }
         }
+        @if (monitors().length < 2 && !hasPreview()) {
+          <span class="shrink-0 text-[11px] text-amber-300">Só 1 monitor detectado. No Windows use Win+P → Estender.</span>
+        }
         @if (hasPreview()) {
           <div class="flex shrink-0 items-center gap-2 rounded border border-sky-600/50 bg-sky-950/40 px-2.5 py-1 text-[11px] text-sky-200">
             <span class="h-2 w-2 animate-pulse rounded-full bg-sky-400"></span>

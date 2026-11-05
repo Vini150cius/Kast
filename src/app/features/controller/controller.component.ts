@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MonitorService } from '../../core/services/monitor.service';
 import { MediaLibraryService } from '../../core/services/media-library.service';
@@ -36,7 +36,7 @@ const MIN_SPLASH_MS = 3800;
     <app-settings-modal />
   `
 })
-export class ControllerComponent implements OnInit {
+export class ControllerComponent implements OnInit, OnDestroy {
   private readonly monitors = inject(MonitorService);
   private readonly library = inject(MediaLibraryService);
   private readonly video = inject(VideoQueueService);
@@ -46,6 +46,17 @@ export class ControllerComponent implements OnInit {
     const minDelay = new Promise<void>((r) => setTimeout(r, MIN_SPLASH_MS));
     await Promise.all([this.monitors.refresh(), minDelay]);
     await this.monitors.notifyReady(); // fecha a splash e mostra esta janela
+    this.monitors.startWatching();
+  }
+
+  ngOnDestroy(): void {
+    this.monitors.stopWatching();
+  }
+
+  /** Voltou de "Win+P → Estender" ou de configurações de tela: reconsulta na hora. */
+  @HostListener('window:focus')
+  protected onFocus(): void {
+    void this.monitors.refresh();
   }
 
   @HostListener('window:keydown', ['$event'])
